@@ -1,0 +1,37 @@
+About Enrango
+============
+
+Enrango is a simple web application for managing applicants or enrolled users
+to events, or whatever you need to manage.
+
+Dependencies
+============
+
+
+Installing and Running
+======================
+
+
+Licensing and Legalese
+=======================
+
+Enrango is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Enrango is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Enrango.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Contributing To the Project
+===========================
+
+Send patches to <thomas.sigurdsen@gmail.com>.
+
+/* vim: set textwidth=78 formatoptions=actw2 autoindent: */
