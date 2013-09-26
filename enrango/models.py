@@ -14,6 +14,7 @@ class Participant(models.Model):
     phone = models.PositiveIntegerField()
     email = models.EmailField()
     address = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
+    enrolled = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -38,12 +39,12 @@ class Event(models.Model):
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_event = models.DateTimeField(auto_now_add=False)
-    #participants = models.ForeignKey(ParticipantList)
+    max_participants = models.PositiveIntegerField()
+    participants = models.ForeignKey(Participant)
 
     def __unicode__(self):
         return self.title
 
-
-class ParticipantList(models.Model):
-    event = models.ForeignKey(Event)
-    members = models.ForeignKey(Participant)
+    def get_empty_seats(self):
+        """Returns number (possibly negative) of free seats for this event"""
+        return self.max_participants - self.enrolled_participants.count()
