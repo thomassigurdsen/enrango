@@ -22,6 +22,7 @@ from django.conf.urls import patterns, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns('enrango.views',
                        url(r'^$', 'index'),
+                       url(r'^(?P<event_id>\d+)/$', 'event')
                        )

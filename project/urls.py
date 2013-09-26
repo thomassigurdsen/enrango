@@ -24,6 +24,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^$', 'index'),
+                       url(r'^$', include('enrango.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )
