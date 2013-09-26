@@ -33,15 +33,12 @@ class Event(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_event = models.DateTimeField(auto_now_add=False)
     max_participants = models.PositiveIntegerField()
-    #participants = models.ForeignKey(Participant)
 
     def __unicode__(self):
         return self.title
 
     def get_empty_seats(self):
         """Returns number (possibly negative) of free seats for this event"""
-        #e = Event.objects.get()
-        #part_num = e.participant_set.filter().count()
         pc = int(Participant.objects.filter(event__exact=self.id).count())
         return self.max_participants - pc
     get_empty_seats.admin_order_field = 'max_participants'
@@ -61,7 +58,12 @@ class Participant(models.Model):
     phone = models.PositiveIntegerField()
     email = models.EmailField()
     address = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
-    enrolled = models.BooleanField(default=False)
+    #enrolled = models.BooleanField(default=False)
+    status = (
+        (u'NA', u'Not Available'),
+        (u'EN', u'Enrolled'),
+        (u'WA', u'Waiting in queue'),
+    )
     event = models.ForeignKey(Event)
 
     def __unicode__(self):
