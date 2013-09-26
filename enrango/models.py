@@ -23,6 +23,31 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 
 
+class Event(models.Model):
+    """The events the app is managing enrolled users for.
+
+    TODO: Meta subclass?
+    """
+    title = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_event = models.DateTimeField(auto_now_add=False)
+    max_participants = models.PositiveIntegerField()
+    #participants = models.ForeignKey(Participant)
+
+    def __unicode__(self):
+        return self.title
+
+    def get_empty_seats(self):
+        """Returns number (possibly negative) of free seats for this event"""
+        #e = Event.objects.get()
+        #part_num = e.participant_set.filter().count()
+        pc = int(Participant.objects.filter(event__exact=self.id).count())
+        return self.max_participants - pc
+    get_empty_seats.admin_order_field = 'max_participants'
+    get_empty_seats.short_description = 'Number of free seats'
+
+
 class Participant(models.Model):
     """
     Participants are currently required to leave this info. Should be fixed.
@@ -37,6 +62,7 @@ class Participant(models.Model):
     email = models.EmailField()
     address = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
     enrolled = models.BooleanField(default=False)
+    event = models.ForeignKey(Event)
 
     def __unicode__(self):
         return self.name
@@ -47,30 +73,10 @@ class Participant(models.Model):
         Returns true if length is ok.
         TODO: do a more thorough/robust check.
         """
-        if self.phone.length > 12 or self.phone < 8:
+        if len(str(abs(self))) is not 8:
             raise ValidationError(u'%s does not look like a phonenumber \
-                                  (Norwegian phonenumbers are between 8 and \
-                                  12 digits).' % self.phone)
+                                  (Standard Norwegian phonenumbers are 8 \
+                                  digits long).' % self)
         return True
 
     phone.validators = [check_phonenumber_length]
-
-
-class Event(models.Model):
-    """The events the app is managing enrolled users for.
-
-    TODO: Meta subclass?
-    """
-    title = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
-    description = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_event = models.DateTimeField(auto_now_add=False)
-    max_participants = models.PositiveIntegerField()
-    participants = models.ForeignKey(Participant)
-
-    def __unicode__(self):
-        return self.title
-
-    def get_empty_seats(self):
-        """Returns number (possibly negative) of free seats for this event"""
-        return self.max_participants - self.enrolled_participants.count()
