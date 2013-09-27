@@ -24,6 +24,10 @@ from enrango.models import Event, Participant
 
 class ParticipantInline(admin.TabularInline):
     model = Participant
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'address', 'phone', 'email', 'status')
+        }),)
 
 
 class EventAdmin(admin.ModelAdmin):
