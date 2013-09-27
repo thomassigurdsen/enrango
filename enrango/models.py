@@ -58,16 +58,22 @@ class Participant(models.Model):
     phone = models.PositiveIntegerField()
     email = models.EmailField()
     address = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
-    #enrolled = models.BooleanField(default=False)
-    status = (
+    identifier = models.PositiveIntegerField(max_length=settings.MAX_CHARFIELD_LENGTH)
+    STATUSENUM = (
         (u'NA', u'Not Available'),
         (u'EN', u'Enrolled'),
         (u'WA', u'Waiting in queue'),
     )
+    status = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH,
+                              choices=STATUSENUM)
     event = models.ForeignKey(Event)
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.identifier = hash(self.name + str(self.phone))
+        super(Participant, self).save(*args, **kwargs)
 
     def check_phonenumber_length(self):
         """Norwegian phonenumbers are between 8 and 12 digits long
