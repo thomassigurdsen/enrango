@@ -18,8 +18,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 #
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
+from enrango.models import Event
+from datetime import datetime
 
 
 def index(request):
-    return render_to_response('enrango/index.html')
+    future_events_list = Event.objects.filter(date_event__gt=datetime.now()).order_by('date_event')
+    past_events_list = Event.objects.filter(date_event__lt=datetime.now()).order_by('date_event')
+    return render_to_response('enrango/index.html', {
+        'future_events_list':
+        future_events_list,
+        'past_events_list':
+        past_events_list
+    })
+
+
+def event(request, event_id):
+    event_object = get_object_or_404(Event, pk=event_id)
+    free_seats = Event.objects.get(pk=event_id).get_empty_seats()
+    return render_to_response('enrango/event.html', {
+        'event': event_object,
+        'free_seats': free_seats,
+    })
