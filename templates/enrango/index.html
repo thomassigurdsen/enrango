@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 MA 02110-1301, USA.
 --!>
 
+{% load humanize %}
 <!DOCTYPE html>
 <html lang=en>
     <head>
@@ -29,13 +30,15 @@ MA 02110-1301, USA.
         <h2>Future Events:</h2>
         <ul>
             {% for event in future_events_list %}
-            <li><a href="event/{{ event.id }}/">{{ event.title }} - {{ event.date_event }}</a></li>
+            <li><a href="event/{{ event.id }}/">{{ event.title }} -
+                {{ event.date_event|naturaltime }}</a></li>
             {% endfor %}
         </ul>
         <h2>Past Events:</h2>
         <ul>
             {% for event in past_events_list %}
-            <li><a href="event/{{ event.id }}/">{{ event.title }} - {{ event.date_event }}</a></li>
+            <li><a href="event/{{ event.id }}/">{{ event.title }} -
+                {{ event.date_event|naturaltime }}</a></li>
             {% endfor %}
         </ul>
     </body>

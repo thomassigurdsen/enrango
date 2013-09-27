@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_extensions',
     'enrango',
+    'django.contrib.humanize',
 )
 
 # A sample logging configuration. The only tangible logging
