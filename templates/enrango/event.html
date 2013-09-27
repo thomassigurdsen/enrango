@@ -26,7 +26,17 @@ MA 02110-1301, USA.
     </head>
     <body>
         <h1>{{ event.title }}</h1>
+        <section>
+        <h2>Description:</h2>
         <p>{{ event.description }}</p>
-        <p></p>
+        {% if free_seats < 1 %}
+            <p>There are no free seats and {{ free_seats|add:"*(-1)" }} in queue.</p>
+        {% elif free_seats > 0 %}
+            <p>Free seats: {{ free_seats }}</p>
+            <!-- TODO: Add enrollment form --!>
+        {% else %}
+            <p>Something is wrong. Please contact an admin.</p>
+        {% endif %}
+        </section>
     </body>
 </html>
