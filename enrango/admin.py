@@ -27,6 +27,7 @@ class ParticipantInline(admin.TabularInline):
 
 
 class EventAdmin(admin.ModelAdmin):
+# TODO: show and sort by date_event in django admin
     fieldsets = (
         (None, {
             'fields': (('title', 'date_event', 'max_participants',),
