@@ -37,7 +37,13 @@ def index(request):
 def event(request, event_id):
     event_object = get_object_or_404(Event, pk=event_id)
     free_seats = Event.objects.get(pk=event_id).get_empty_seats()
+    if free_seats < 1:
+        queue_length = abs(free_seats)
+    else:
+        queue_length = 0
+
     return render_to_response('enrango/event.html', {
         'event': event_object,
         'free_seats': free_seats,
+        'queue_length': queue_length,
     })
