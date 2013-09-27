@@ -29,13 +29,13 @@ MA 02110-1301, USA.
         <h2>Future Events:</h2>
         <ul>
             {% for event in future_events_list %}
-            <li><a href="event/{{ event.id }}/">{{ event.title }}</a></li>
+            <li><a href="event/{{ event.id }}/">{{ event.title }} - {{ event.date_event }}</a></li>
             {% endfor %}
         </ul>
         <h2>Past Events:</h2>
         <ul>
             {% for event in past_events_list %}
-            <li><a href="event/{{ event.id }}/">{{ event.title }}</a></li>
+            <li><a href="event/{{ event.id }}/">{{ event.title }} - {{ event.date_event }}</a></li>
             {% endfor %}
         </ul>
     </body>
