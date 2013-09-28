@@ -21,6 +21,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from enrango.models import Event
 from datetime import datetime
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -47,3 +49,8 @@ def event(request, event_id):
         'free_seats': free_seats,
         'queue_length': queue_length,
     })
+
+
+def register(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    return HttpResponseRedirect(reverse('event', args=(event.id,)))

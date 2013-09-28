@@ -30,12 +30,15 @@ MA 02110-1301, USA.
         <h2>Description:</h2>
         <p>{{ event.description }}</p>
         {% if queue_length %}
-        <p>There are no free seats and {{ queue_length }} in queue.</p>
+            <p>There are no free seats and {{ queue_length }} in queue.</p>
         {% elif not queue_length %}
-        <p>Free seats: {{ free_seats }}</p>
-        <!-- TODO: Add enrollment form --!>
+            <p>Free seats: {{ free_seats }}</p>
+            {% if event.event_date %}
+                <!-- TODO: Add enrollment form --!>
+                <p>ENROLLMENT FORM!</p>
+            {% endif%}
         {% else %}
-        <p>Something is wrong. Please contact an admin.</p>
+            <p>Something is wrong. Please contact an admin.</p>
         {% endif %}
         </section>
     </body>
