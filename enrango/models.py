@@ -65,7 +65,8 @@ class Participant(models.Model):
         (u'WA', u'Waiting in queue'),
     )
     status = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH,
-                              choices=STATUSENUM)
+                              choices=STATUSENUM,
+                              default=u'NA')
     event = models.ForeignKey(Event)
 
     def __unicode__(self):
