@@ -10,7 +10,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/thomas/workspace/enroll-tree/enrango/sqlite3.db',
+        'NAME': 'sqlite3.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',

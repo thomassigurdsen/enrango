@@ -21,6 +21,8 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from enrango.models import Event
 from datetime import datetime
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 
 def index(request):
