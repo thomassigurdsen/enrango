@@ -23,6 +23,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('enrango.views',
-                       url(r'$', 'index'),
+                       url(r'^$', 'index'),
                        url(r'(?P<event_id>\d+)/$', 'event')
                        )
