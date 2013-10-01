@@ -33,10 +33,17 @@ MA 02110-1301, USA.
             <p>There are no free seats and {{ queue_length }} in queue.</p>
         {% elif not queue_length %}
             <p>Free seats: {{ free_seats }}</p>
-            {% if event.event_date %}
-                <!-- TODO: Add enrollment form --!>
-                <p>ENROLLMENT FORM!</p>
-            {% endif%}
+            {% if future_event %}
+                <h2>Enroll</h2>
+                <p>Fill in this form to enroll. You will then receive an email
+                with a link to the activation page for your enrollment</p>
+                <!-- TODO: split address? --!>
+                <form method="post" action="/event/{{ event.id }}/">
+                    {% csrf_token %}
+                    {{ participant_form.as_p }}
+                <input type="submit" value="Submit" />
+                </form>
+            {% endif %}
         {% else %}
             <p>Something is wrong. Please contact an admin.</p>
         {% endif %}

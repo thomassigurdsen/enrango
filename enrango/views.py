@@ -19,15 +19,14 @@
 # MA 02110-1301, USA.
 #
 from django.shortcuts import render_to_response, get_object_or_404
-from enrango.models import Event
-from datetime import datetime
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from enrango.models import Event, ParticipantForm
+from django.utils import timezone
+from django.template import RequestContext
 
 
 def index(request):
-    future_events_list = Event.objects.filter(date_event__gt=datetime.now()).order_by('date_event')
-    past_events_list = Event.objects.filter(date_event__lt=datetime.now()).order_by('date_event')
+    future_events_list = Event.objects.filter(date_event__gt=timezone.now()).order_by('date_event')
+    past_events_list = Event.objects.filter(date_event__lt=timezone.now()).order_by('date_event')
     return render_to_response('enrango/index.html', {
         'future_events_list':
         future_events_list,
@@ -38,7 +37,18 @@ def index(request):
 
 def event(request, event_id):
     event_object = get_object_or_404(Event, pk=event_id)
-    free_seats = Event.objects.get(pk=event_id).get_empty_seats()
+    future_event = bool(event_object.date_event > timezone.now())
+    part_form = ParticipantForm()
+    if request.method == 'POST':
+        part_form = ParticipantForm(request.POST)
+        if part_form.is_valid():
+            participant = part_form.save(commit=False)
+            participant.event = event_object
+            free_seats = event_object.get_empty_seats()
+            participant.save()
+            part_form = ParticipantForm()
+
+    free_seats = event_object.get_empty_seats()
     if free_seats < 1:
         queue_length = abs(free_seats)
     else:
@@ -48,9 +58,6 @@ def event(request, event_id):
         'event': event_object,
         'free_seats': free_seats,
         'queue_length': queue_length,
-    })
-
-
-def register(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    return HttpResponseRedirect(reverse('event', args=(event.id,)))
+        'future_event': future_event,
+        'participant_form': part_form,
+    }, RequestContext(request))
