@@ -21,6 +21,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 
 
 class Event(models.Model):
@@ -73,7 +74,7 @@ class Participant(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.identifier = hash(self.name + str(self.phone))
+        self.identifier = abs(hash(self.name + str(self.phone)))
         super(Participant, self).save(*args, **kwargs)
 
     def check_phonenumber_length(self):
@@ -89,3 +90,9 @@ class Participant(models.Model):
         return True
 
     phone.validators = [check_phonenumber_length]
+
+
+class ParticipantForm(ModelForm):
+    class Meta:
+        model = Participant
+        exclude = ('identifier', 'status', 'event',)
