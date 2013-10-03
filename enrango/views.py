@@ -19,9 +19,10 @@
 # MA 02110-1301, USA.
 #
 from django.shortcuts import render_to_response, get_object_or_404
-from enrango.models import Event, ParticipantForm
+from enrango.models import Event, ParticipantForm, Participant
 from django.utils import timezone
 from django.template import RequestContext
+from enrango.mail import send_enrollment  # , send_unenrollment
 
 
 def index(request):
@@ -47,6 +48,7 @@ def event(request, event_id):
             free_seats = event_object.get_empty_seats()
             participant.save()
             part_form = ParticipantForm()
+            send_enrollment(participant)
 
     free_seats = event_object.get_empty_seats()
     if free_seats < 1:
@@ -61,3 +63,14 @@ def event(request, event_id):
         'future_event': future_event,
         'participant_form': part_form,
     }, RequestContext(request))
+
+
+def participant_details(request, part_identifier):
+    # TODO: activate participant when requesting this page(?) (have them enter
+    # their name or similar, to prevent false activations?)
+    #
+    # Also make sure of queueing and status correctness.
+    participant = Participant.objects.get(identifier=part_identifier)
+    return render_to_response('enrango/participant_details.html', {
+        'participant': participant,
+    },)
