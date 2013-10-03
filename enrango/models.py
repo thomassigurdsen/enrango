@@ -45,6 +45,10 @@ class Event(models.Model):
     get_empty_seats.admin_order_field = 'max_participants'
     get_empty_seats.short_description = 'Number of free seats'
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('enrango.views.event', [str(self.id)])
+
 
 class Participant(models.Model):
     """
