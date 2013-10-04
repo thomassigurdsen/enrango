@@ -1,16 +1,22 @@
 About Enrango
-============
+=============
 
-Enrango is a simple web application for managing applicants or enrolled users
-to events, or whatever you need to manage.
+Enrango is a simple web application for managing participants for events. 
+Participants will not need to make user accounts, enrollment is 
+activated/deactivated by email.
+
+Enrango is currently in an alfa stage of development.
 
 Dependencies
 ============
 
+Enrango has been written using:
+Python 2.7
+Django 1.4
 
 Installing and Running
 ======================
-
+TODO
 
 Licensing and Legalese
 =======================
@@ -32,6 +38,7 @@ along with Enrango.  If not, see <http://www.gnu.org/licenses/>.
 Contributing To the Project
 ===========================
 
-Send patches to <thomas.sigurdsen@gmail.com>.
+Send patches to <thomas.sigurdsen@gmail.com> or pull-requests to 
+<https://github.com/thomassigurdsen/enrango>.
 
 /* vim: set textwidth=78 formatoptions=actw2 autoindent: */
