@@ -19,21 +19,31 @@
 # MA 02110-1301, USA.
 #
 from django.core.mail import send_mail, BadHeaderError
-#from enrango.models import Participant
+from django.conf import settings
+from smtplib import SMTPConnectError, SMTPHeloError, SMTPAuthenticationError
 import sys
 
 
 def send_enrollment(participant):
     subject = 'Activation required for enrollment'
     message = 'To activate ' + participant.name + ' enrollment for ' + \
-            participant.event.title + ' open the following link in your \
-            browser of choice: ' + participant.event.get_absolute_url()
-    from_email = ['lol']
+        participant.event.title + ' open the following link in your \
+        browser of choice: ' + participant.event.get_absolute_url()
+    from_email = settings.ENRANGO_EMAIL
     to_email = participant.email
     try:
-        send_mail(subject, message, from_email, [to_email])
-    except BadHeaderError:
-        print "There is error in sputnik"
+        send_mail(subject, message, from_email, [to_email],
+                  fail_silently=False,
+                  auth_user="thomas.sigurdsen@gmail.com")
+    except BadHeaderError as e:
+        print "Bad header found: ", e
+    except SMTPConnectError as e:
+        print "Connection error: ", e
+    except SMTPHeloError as e:
+        print "Helo error: ", e
+    except SMTPAuthenticationError as e:
+        print "Authentication error: ", e
     except:
-        print "ERROR IN SPJUTNJIK: ", sys.exc_info()[0]
-    print "sputnik is ok"
+        print "An error has occurred while trying to send mail: ", \
+            sys.exc_info()
+    print "I should now redirect to a thanks page or similar."
