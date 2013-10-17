@@ -157,3 +157,4 @@ LOGGING = {
 ## Appended options
 FIRST_DAY_OF_WEEK = 1
 MAX_CHARFIELD_LENGTH = 1024
+ENRANGO_EMAIL = ['test@example.org']
