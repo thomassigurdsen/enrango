@@ -5,3 +5,7 @@ local_settings.py
 
 # DB
 *.db
+
+# Temporary files from editors
+*.swp
+*~
