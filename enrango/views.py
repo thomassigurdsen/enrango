@@ -36,6 +36,8 @@ def index(request):
     })
 
 
+# If sending email fails I should redirect to a failure page; and NOT save
+# to db...
 def event(request, event_id):
     event_object = get_object_or_404(Event, pk=event_id)
     future_event = bool(event_object.date_event > timezone.now())

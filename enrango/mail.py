@@ -29,12 +29,11 @@ def send_enrollment(participant):
     message = 'To activate ' + participant.name + ' enrollment for ' + \
         participant.event.title + ' open the following link in your \
         browser of choice: ' + participant.event.get_absolute_url()
-    from_email = settings.ENRANGO_EMAIL
+    from_email = settings.DEFAULT_FROM_EMAIL
     to_email = participant.email
     try:
         send_mail(subject, message, from_email, [to_email],
-                  fail_silently=False,
-                  auth_user="thomas.sigurdsen@gmail.com")
+                  fail_silently=False)
     except BadHeaderError as e:
         print "Bad header found: ", e
     except SMTPConnectError as e:
