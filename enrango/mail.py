@@ -18,31 +18,25 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 #
-from django.core.mail import send_mail, BadHeaderError
+import smtplib
 from django.conf import settings
-from smtplib import SMTPConnectError, SMTPHeloError, SMTPAuthenticationError
-import sys
 
 
+# TODO: pluralize and such, render through template would be good.
+# TODO: construct correct url, should go to participants hashed event page.
 def send_enrollment(participant):
-    subject = 'Activation required for enrollment'
-    message = 'To activate ' + participant.name + ' enrollment for ' + \
-        participant.event.title + ' open the following link in your \
-        browser of choice: ' + participant.event.get_absolute_url()
-    from_email = settings.DEFAULT_FROM_EMAIL
-    to_email = participant.email
-    try:
-        send_mail(subject, message, from_email, [to_email],
-                  fail_silently=False)
-    except BadHeaderError as e:
-        print "Bad header found: ", e
-    except SMTPConnectError as e:
-        print "Connection error: ", e
-    except SMTPHeloError as e:
-        print "Helo error: ", e
-    except SMTPAuthenticationError as e:
-        print "Authentication error: ", e
-    except:
-        print "An error has occurred while trying to send mail: ", \
-            sys.exc_info()
-    print "I should now redirect to a thanks page or similar."
+    fromaddr = settings.ENRANGO_EMAIL
+    toaddr = participant.email
+    message = ("From: %s\r\nTo: %s\r\n" % (fromaddr, toaddr))
+    message = message + "Subject: Activation required for enrollment\r\n"
+    message = message + 'To activate ' + participant.name + ' enrollment for ' + \
+        participant.event.title + ' open the following link in your ' + \
+        'browser of choice: ' + participant.event.get_absolute_url() + "\r\n"
+    smtpserver = smtplib.SMTP_SSL(host=settings.EMAIL_HOST,
+                                  port=settings.EMAIL_PORT)
+    if settings.EMAIL_USE_TLS:
+        smtpserver.login(user=settings.EMAIL_HOST_USER,
+                         password=settings.EMAIL_HOST_PASSWORD)
+
+    smtpserver.set_debuglevel(0)
+    return smtpserver.sendmail(fromaddr, toaddr, message)
