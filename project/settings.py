@@ -154,7 +154,12 @@ LOGGING = {
     }
 }
 
-## Appended options
+## Enrango options
 FIRST_DAY_OF_WEEK = 1
 MAX_CHARFIELD_LENGTH = 1024
-ENRANGO_EMAIL = ['test@example.org']
+ENRANGO_EMAIL = 'test@example.org'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'example.org'
+EMAIL_HOST_USER = 'mailserver-logon-user'
+EMAIL_HOST_PASSWORD = 'super secret password no one should know about'
+EMAIL_PORT = 465
