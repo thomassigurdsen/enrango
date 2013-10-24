@@ -18,10 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 #
-from django.db import models
+from django.db import models, IntegrityError
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+import sys
 
 
 class Event(models.Model):
@@ -63,7 +64,9 @@ class Participant(models.Model):
     phone = models.PositiveIntegerField()
     email = models.EmailField()
     address = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
-    identifier = models.PositiveIntegerField(max_length=settings.MAX_CHARFIELD_LENGTH)
+    identifier = \
+        models.PositiveIntegerField(max_length=settings.MAX_CHARFIELD_LENGTH,
+                                    unique=True)
     STATUSENUM = (
         (u'NA', u'Not Available'),
         (u'EN', u'Enrolled'),
@@ -77,9 +80,18 @@ class Participant(models.Model):
     def __unicode__(self):
         return self.name
 
+    # TODO: check for success everywhere this is called
     def save(self, *args, **kwargs):
         self.identifier = abs(hash(self.name + str(self.phone)))
-        super(Participant, self).save(*args, **kwargs)
+        try:
+            super(Participant, self).save(*args, **kwargs)
+        except IntegrityError as interr:
+            print "Error saving " + self.name + ":", interr.exc_info()
+            return 1
+        except:
+            print "Error saving " + self.name + ":", sys.exc_info()
+            return 9001
+        return 0
 
     def check_phonenumber_length(self):
         """Norwegian phonenumbers are between 8 and 12 digits long
