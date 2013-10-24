@@ -20,18 +20,30 @@
 #
 import smtplib
 from django.conf import settings
+from django.shortcuts import render_to_response
 
 
-# TODO: pluralize and such, render through template would be good.
-# TODO: construct correct url, should go to participants hashed event page.
 def send_enrollment(participant):
+    participant_url = (settings.ENRANGO_FQDN +
+                       participant.event.get_absolute_url() +
+                       repr(participant.identifier) +
+                       u'/')
+    participant_possessive = ''
+    if participant.name[len(participant.name) - 1] == 's':
+        participant_possessive = u'\''
+    else:
+        participant_possessive = u'\'s'
+
     fromaddr = settings.ENRANGO_EMAIL
     toaddr = participant.email
-    message = ("From: %s\r\nTo: %s\r\n" % (fromaddr, toaddr))
-    message = message + "Subject: Activation required for enrollment\r\n"
-    message = message + 'To activate ' + participant.name + ' enrollment for ' + \
-        participant.event.title + ' open the following link in your ' + \
-        'browser of choice: ' + participant.event.get_absolute_url() + "\r\n"
+    message = (u'From: %s\r\nTo: %s\r\n' % (fromaddr, toaddr))
+    message = (message + u'Subject: Activation required for enrollment\r\n')
+    message = (message +
+               str(render_to_response('enrango/enroll_mail.html', {
+                   'participant': participant,
+                   'participant_url': participant_url,
+                   'participant_possessive': participant_possessive,
+               },)))
     smtpserver = smtplib.SMTP_SSL(host=settings.EMAIL_HOST,
                                   port=settings.EMAIL_PORT)
     if settings.EMAIL_USE_TLS:

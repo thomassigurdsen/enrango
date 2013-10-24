@@ -69,9 +69,9 @@ def event(request, event_id):
 
 def participant_details(request, part_identifier):
     # TODO: activate participant when requesting this page(?) (have them enter
-    # their name or similar, to prevent false activations?)
+    # TODO: their name or similar, to prevent false activations?)
     #
-    # Also make sure of queueing and status correctness.
+    # TODO: Also make sure of queueing and status correctness.
     participant = Participant.objects.get(identifier=part_identifier)
     return render_to_response('enrango/participant_details.html', {
         'participant': participant,
