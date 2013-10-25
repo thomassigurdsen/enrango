@@ -22,7 +22,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from enrango.models import Event, ParticipantForm, Participant
 from django.utils import timezone
 from django.template import RequestContext
-from enrango.mail import send_enrollment  # , send_unenrollment
+from enrango.mail import send_enrollment
 
 
 def index(request):
@@ -67,7 +67,8 @@ def event(request, event_id):
     }, RequestContext(request))
 
 
-def participant_details(request, part_identifier):
+def participant_details(request, event_id, part_identifier):
+    print "I have entered the participant_details view"
     # TODO: activate participant when requesting this page(?) (have them enter
     # TODO: their name or similar, to prevent false activations?)
     #

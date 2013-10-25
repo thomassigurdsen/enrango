@@ -25,6 +25,6 @@ admin.autodiscover()
 urlpatterns = patterns('enrango.views',
                        url(r'^$', 'index'),
                        url(r'(?P<event_id>\d+)/$', 'event'),
-                       url(r'mydetails/(?P<part_identifier>\d+)/$',
+                       url(r'(?P<event_id>\d+)/(?P<part_identifier>\d+)/$',
                            'participant_details'),
                        )

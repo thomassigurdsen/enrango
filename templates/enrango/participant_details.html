@@ -8,7 +8,7 @@
         <h1>{{ participant.name|title }}s Enrollment Status</h1>
         <section>
         <!-- TODO: make status become a 'you are number # in line...'
-        use contrib.humanize ordinal --!>
+        TODO: use contrib.humanize ordinal --!>
         You are currently {{ participant.status }} in 
         <a href="{{ participant.event.get_absolute_url }}">{{ participant.event.title }}</a>
         </section>
