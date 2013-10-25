@@ -24,7 +24,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       #url(r'^$', enrango.views.event),
                        url(r'^event/', include('enrango.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )
