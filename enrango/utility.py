@@ -22,12 +22,17 @@
 from django.conf import settings
 
 
-def possessive(participant):
+def get_possessive(participant):
     """ returns ' or 's depending on the last character of participants name """
+    # TODO: BUG: This does not return correctly for some reason...
+    # TODO: BUG: Probably something about python assignment and strings I
+    # TODO: BUG: don't get.
+    retstr = u'\'s'
+    print participant.name[len(participant.name) - 1]
     if participant.name[len(participant.name) - 1] == 's':
-        return u'\''
+        retstr = u'\''
 
-    return u'\'s'
+    return retstr
 
 
 def get_participant_url(participant):

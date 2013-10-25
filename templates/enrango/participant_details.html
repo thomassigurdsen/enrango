@@ -9,8 +9,9 @@
         <section>
         <!-- TODO: make status become a 'you are number # in line...'
         TODO: use contrib.humanize ordinal --!>
-        You are currently {{ participant.status }} in 
+        You are currently {{ participant.get_status_display }} in
         <a href="{{ participant.event.get_absolute_url }}">{{ participant.event.title }}</a>
+        <p> To unenroll follow this link: TODO: INSERT LINK </p>
         </section>
     </body>
 </html>

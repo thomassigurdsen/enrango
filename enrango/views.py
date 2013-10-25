@@ -23,16 +23,15 @@ from enrango.models import Event, ParticipantForm, Participant
 from django.utils import timezone
 from django.template import RequestContext
 from enrango.mail import send_enrollment
+from enrango.utility import get_possessive
 
 
 def index(request):
     future_events_list = Event.objects.filter(date_event__gt=timezone.now()).order_by('date_event')
     past_events_list = Event.objects.filter(date_event__lt=timezone.now()).order_by('date_event')
     return render_to_response('enrango/index.html', {
-        'future_events_list':
-        future_events_list,
-        'past_events_list':
-        past_events_list
+        'future_events_list': future_events_list,
+        'past_events_list': past_events_list
     })
 
 
@@ -68,11 +67,13 @@ def event(request, event_id):
 
 
 def participant_details(request, event_id, part_identifier):
-    # TODO: activate participant when requesting this page(?) (have them enter
-    # TODO: their name or similar, to prevent false activations?)
+    # TODO: SECURITY: Have participants enter their name or similar,
+    # TODO: SECURITY: to prevent false activations?)
     #
     # TODO: Also make sure of queueing and status correctness.
     participant = get_object_or_404(Participant, identifier=part_identifier)
+    participant.update_status(activate=True)
     return render_to_response('enrango/participant_details.html', {
         'participant': participant,
+        'participant_possessive': get_possessive(participant),
     },)
