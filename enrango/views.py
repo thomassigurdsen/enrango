@@ -68,12 +68,11 @@ def event(request, event_id):
 
 
 def participant_details(request, event_id, part_identifier):
-    print "I have entered the participant_details view"
     # TODO: activate participant when requesting this page(?) (have them enter
     # TODO: their name or similar, to prevent false activations?)
     #
     # TODO: Also make sure of queueing and status correctness.
-    participant = Participant.objects.get(identifier=part_identifier)
+    participant = get_object_or_404(Participant, identifier=part_identifier)
     return render_to_response('enrango/participant_details.html', {
         'participant': participant,
     },)

@@ -21,19 +21,10 @@
 import smtplib
 from django.conf import settings
 from django.shortcuts import render_to_response
+from enrango.utility import get_possessive, get_participant_url
 
 
 def send_enrollment(participant):
-    participant_url = (settings.ENRANGO_FQDN +
-                       participant.event.get_absolute_url() +
-                       repr(participant.identifier) +
-                       u'/')
-    participant_possessive = ''
-    if participant.name[len(participant.name) - 1] == 's':
-        participant_possessive = u'\''
-    else:
-        participant_possessive = u'\'s'
-
     fromaddr = settings.ENRANGO_EMAIL
     toaddr = participant.email
     message = (u'From: %s\r\nTo: %s\r\n' % (fromaddr, toaddr))
@@ -41,8 +32,8 @@ def send_enrollment(participant):
     message = (message +
                str(render_to_response('enrango/enroll_mail.html', {
                    'participant': participant,
-                   'participant_url': participant_url,
-                   'participant_possessive': participant_possessive,
+                   'participant_url': get_participant_url(participant),
+                   'participant_possessive': get_possessive(participant),
                },)))
     smtpserver = smtplib.SMTP_SSL(host=settings.EMAIL_HOST,
                                   port=settings.EMAIL_PORT)
