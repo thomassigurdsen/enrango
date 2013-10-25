@@ -25,6 +25,7 @@ from enrango.utility import get_possessive, get_participant_url
 
 
 def send_enrollment(participant):
+    # TODO: check for success
     fromaddr = settings.ENRANGO_EMAIL
     toaddr = participant.email
     message = (u'From: %s\r\nTo: %s\r\n' % (fromaddr, toaddr))

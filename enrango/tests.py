@@ -18,19 +18,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 #
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
-from django.test import TestCase
+import unittest
+#from django.test import TestCase
+from enrango.models import Participant, Event
+from enrango.utility import get_possessive  # , get_participant_url
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class GetPossessiveTest(unittest.TestCase):
+    def setUp(self):
+        self.event = Event.objects.create(title='Some Event',
+                                          description='Event description',
+                                          date_event='2020-06-06',
+                                          max_participants=3)
+        self.part_sss = Participant.objects.create(name='sss',
+                                                   phone=12345678,
+                                                   email='sss@localhost.com',
+                                                   address='teststreet 3',
+                                                   event=self.event)
+        self.part_nnn = Participant.objects.create(name='nnn',
+                                                   phone=87654321,
+                                                   email='nnn@localhost.com',
+                                                   address='teststreet 4',
+                                                   event=self.event)
+
+    def runTest(self):
+        self.assertEqual(get_possessive(self.part_sss), u'\'')
+        self.assertEqual(get_possessive(self.part_nnn), u'\'s')
