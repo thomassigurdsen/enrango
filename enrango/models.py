@@ -59,6 +59,7 @@ class Participant(models.Model):
     mean make it customizable, preferrably via the admin interface. TODO
 
     TODO: Meta subclass?
+    TODO: possibility for participants to bring X extra number of people?
     """
     name = models.CharField(max_length=settings.MAX_CHARFIELD_LENGTH)
     phone = models.PositiveIntegerField()
@@ -81,17 +82,33 @@ class Participant(models.Model):
         return self.name
 
     # TODO: check for success everywhere this is called
+    # TODO: change or add email to the hashed things, so people can register
+    # TODO: with multiple names/emails
     def save(self, *args, **kwargs):
         self.identifier = abs(hash(self.name + str(self.phone)))
         try:
             super(Participant, self).save(*args, **kwargs)
         except IntegrityError as interr:
-            print "Error saving " + self.name + ":", interr.exc_info()
+            print "Error saving " + self.name + ":", interr
             return 1
         except:
             print "Error saving " + self.name + ":", sys.exc_info()
             return 9001
         return 0
+
+    def update_status(self, activate=True):
+        """
+        Sets userstatus to active(EN/WA) if activate=True, else deactivate(NA)
+        """
+        if activate:
+            if self.status is 'NA':
+                if self.event.get_empty_seats() > 0:
+                    self.status = 'EN'
+                else:
+                    self.status = 'WA'
+        elif not activate:
+            if self.status is not 'NA':
+                self.status = 'NA'
 
     def check_phonenumber_length(self):
         """Norwegian phonenumbers are between 8 and 12 digits long
