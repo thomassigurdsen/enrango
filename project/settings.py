@@ -163,3 +163,5 @@ EMAIL_HOST = 'example.org'
 EMAIL_HOST_USER = 'mailserver-logon-user'
 EMAIL_HOST_PASSWORD = 'super secret password no one should know about'
 EMAIL_PORT = 465
+ENRANGO_FQDN = 'http://127.0.0.1:8000'
+
