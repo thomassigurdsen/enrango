@@ -5,7 +5,10 @@ Enrango is a simple web application for managing participants for events.
 Participants will not need to make user accounts, enrollment is 
 activated/deactivated by email.
 
-Enrango is currently in an alfa stage of development.
+Enrango is currently in an alfa stage of development, some features are 
+missing entirely or does not work.
+
+I have stopped development on this project for the time being.
 
 Dependencies
 ============
@@ -20,7 +23,6 @@ TODO
 
 Licensing and Legalese
 =======================
-
 Enrango is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -34,11 +36,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Enrango.  If not, see <http://www.gnu.org/licenses/>.
 
-
 Contributing To the Project
 ===========================
-
-Send patches to <thomas.sigurdsen@gmail.com> or pull-requests to 
+Send patches to <thomas@browniehive.net> or pull-requests to 
 <https://github.com/thomassigurdsen/enrango>.
+
+Future of Enrango
+=================
+There are some things I would like to do with Enrango, if I ever come back to 
+it. Unittesting is the most obvious that is not mentioned elsewhere in these 
+documents.
 
 /* vim: set textwidth=78 formatoptions=actw2 autoindent: */
