@@ -21,7 +21,7 @@
 import unittest
 #from django.test import TestCase
 from enrango.models import Participant, Event
-from enrango.utility import get_possessive  # , get_participant_url
+from enrango.utility import get_possessive, get_participant_url
 
 
 class GetPossessiveTest(unittest.TestCase):
@@ -44,3 +44,21 @@ class GetPossessiveTest(unittest.TestCase):
     def runTest(self):
         self.assertEqual(get_possessive(self.part_sss), u'\'')
         self.assertEqual(get_possessive(self.part_nnn), u'\'s')
+
+
+class GetParticipantUrlTest(unittest.TestCase):
+    def setUp(self):
+        self.event = Event.objects.create(title='Some Event',
+                                          description='Event description',
+                                          date_event='2020-06-06',
+                                          max_participants=3)
+        self.part = Participant.objects.create(name='testname',
+                                               phone=12345678,
+                                               email='sss@localhost.com',
+                                               address='teststreet 3',
+                                               event=self.event)
+
+    def runTest(self):
+        self.assertEqual(self.event.id, 1)
+        self.assertEqual(get_participant_url(self.part), settings.FQDN +
+                         self.event.id + )
